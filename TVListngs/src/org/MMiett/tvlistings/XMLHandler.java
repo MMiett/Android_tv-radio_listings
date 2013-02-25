@@ -23,7 +23,7 @@ import android.widget.TextView;
  */
 
 /**
- * @author MMIETT200
+ * @author Mikko Miettinen
  *
  */
 public class XMLHandler extends DefaultHandler {

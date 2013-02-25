@@ -21,7 +21,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.*;
 
 /**
- * @author MMIETT200
+ * @author Mikko Miettinen
  *
  */
 public class MainActivity extends Activity {
