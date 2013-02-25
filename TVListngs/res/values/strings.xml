@@ -4,5 +4,8 @@
     <string name="app_name">TvListings</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="prev_day">prev</string>
+    <string name="next_day">next</string>
+    
 
 </resources>

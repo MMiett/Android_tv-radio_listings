@@ -20,7 +20,7 @@
 	        android:id="@+id/button1"
 	        android:layout_width="72dp"
 	        android:layout_height="fill_parent"
-	        android:text="prev" />
+	        android:text="@string/prev_day" />
 
 	    <Button
 	        android:id="@+id/button2"
@@ -32,7 +32,7 @@
 	        android:id="@+id/button3"
 	        android:layout_width="wrap_content"
 	        android:layout_height="fill_parent"
-	        android:text="next" />
+	        android:text="@string/next_day" />
 	</LinearLayout>
 
 	    <ScrollView
