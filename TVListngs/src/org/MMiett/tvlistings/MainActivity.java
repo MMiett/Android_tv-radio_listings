@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
 	private TextView errorText;
 	private Button dateButton,prevButton,nextButton;
 	private String result;
-    private String tvListingURL = "http://bleb.org/tv/data/listings/0/4music.xml";//rss.php?ch=bbc1_scotland&day=0";
+    private String tvListingURL = "http://bleb.org/tv/data/listings/0/bbc1_hd.xml";//rss.php?ch=bbc1_scotland&day=0";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,7 @@ public class MainActivity extends Activity {
 		 /**  
 			 * Create TextView Arrays to add the retrieved data to.
 			 **/
+		 	LinearLayout container[];
 			TextView title[];
 			
 			TextView end[];
@@ -63,7 +64,7 @@ public class MainActivity extends Activity {
 			
 			TextView desc[];
 			
-			TextView flags[];
+			//TextView flags[];
 			
 			
 			
@@ -96,11 +97,11 @@ public class MainActivity extends Activity {
 			 * Makes the TextView length the size of the TextView arrays by getting the size of the 
 			 **/
 			title = new TextView[data.getTitle().size()];
-			end = new TextView[data.getEnd().size()];
 			start = new TextView[data.getStart().size()];
+			end = new TextView[data.getEnd().size()];			
 			desc = new TextView[data.getDesc().size()];
-			flags = new TextView[data.getFlags().size()];
-
+			//flags = new TextView[data.getFlags().size()];
+			container= new LinearLayout[data.getTitle().size()];
 			
 
 			/** 
@@ -122,16 +123,26 @@ public class MainActivity extends Activity {
 				desc[i] = new TextView(this);
 				desc[i].setText("desc = "+data.getDesc().get(i));
 				
-				flags[i] = new TextView(this);
-				flags[i].setText("flags = "+data.getFlags().get(i));
+			//	flags[i] = new TextView(this);
+			//	flags[i].setText("flags = "+data.getFlags().get(i));
+				container[i]= new LinearLayout(this);
+				container[i].setOrientation(1); //1 = vertical and 0 = horizontal
+				container[i].setPadding(10, 0, 0, 30);
+				container[i].setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
 				
-
-
+				
+				((ViewGroup) layout).addView(container[i]);
+				((ViewGroup) container[i]).addView(title[i]);
+				((ViewGroup) container[i]).addView(start[i]);
+				((ViewGroup) container[i]).addView(end[i]);				
+				((ViewGroup) container[i]).addView(desc[i]);
+			//	((ViewGroup) layout).addView(flags[i]);
+				/*
 				((ViewGroup) layout).addView(title[i]);
-				((ViewGroup) layout).addView(end[i]);
 				((ViewGroup) layout).addView(start[i]);
-				((ViewGroup) layout).addView(desc[i]);
-				((ViewGroup) layout).addView(flags[i]);
+				((ViewGroup) layout).addView(end[i]);				
+				((ViewGroup) layout).addView(desc[i]); 
+				  */
 			
 			}
 

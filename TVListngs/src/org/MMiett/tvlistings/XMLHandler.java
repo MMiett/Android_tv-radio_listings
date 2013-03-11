@@ -5,7 +5,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * @author Mikko Miettinen
- *
+ * based on sourcecode from http://mobile.tutsplus.com/tutorials/android/android-sdk-build-a-simple-sax-parser/
  */
 
 
@@ -69,9 +69,9 @@ public class XMLHandler extends DefaultHandler {
 			data.setEnd(elementValue);
 		else if (localName.equalsIgnoreCase("start"))
 			data.setStart(elementValue);
-		//else if (localName.equalsIgnoreCase("flags"))
-			//data.setFlags(elementValue);
-	}
+		/*else if (localName.equalsIgnoreCase("flags"))
+			data.setFlags(elementValue);
+	*/}
 
 	/** 
 	 * This is called to get the tags value

@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import android.util.Log;
 
 /**
+ * @author Mikko Miettinen
+ * based on sourcecode from http://mobile.tutsplus.com/tutorials/android/android-sdk-build-a-simple-sax-parser/
+ */
+
+
+/**
  *  This class contains all getter and setter methods to set and retrieve data.
  *  
  **/
