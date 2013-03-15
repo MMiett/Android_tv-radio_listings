@@ -20,14 +20,11 @@ public final class R {
         public static final int ChannelSpinner=0x7f080001;
         public static final int ListingContext=0x7f080005;
         public static final int MainContainer=0x7f080000;
-        public static final int button1=0x7f080002;
-        public static final int button2=0x7f080003;
-        public static final int button3=0x7f080004;
         public static final int contextLayout=0x7f080006;
-        public static final int date_button=0x7f080008;
-        public static final int menu_settings=0x7f08000a;
-        public static final int next_button=0x7f080009;
-        public static final int prev_button=0x7f080007;
+        public static final int date_button=0x7f080003;
+        public static final int menu_settings=0x7f080007;
+        public static final int next_button=0x7f080004;
+        public static final int prev_button=0x7f080002;
     }
     public static final class layout {
         public static final int main=0x7f030000;
