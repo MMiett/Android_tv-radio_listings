@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import android.util.Log;
 
 /**
- * @author Mikko Miettinen
+ * @author Mikko Miettinen 
+ * @studentID S13006616
+ * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com>
  * based on sourcecode from http://mobile.tutsplus.com/tutorials/android/android-sdk-build-a-simple-sax-parser/
  */
 
@@ -17,10 +19,11 @@ import android.util.Log;
  *  
  **/
 public class XMLGettersSetters {
-
+	
+	//what tags you are searching/interested in the xml document
 	private ArrayList<String> title = new ArrayList<String>();
 	private ArrayList<String> desc = new ArrayList<String>();
-	private ArrayList<String> flags = new ArrayList<String>();
+	
 	private ArrayList<String> start = new ArrayList<String>();
 	private ArrayList<String> end = new ArrayList<String>();
 
@@ -31,7 +34,7 @@ public class XMLGettersSetters {
 
 	public void setDesc(String desc) {
 		this.desc.add(desc);
-		Log.i("This is the company:", desc);
+		Log.i("This is the description:", desc);
 	}
 
 	public ArrayList<String> getStart() {
@@ -40,7 +43,7 @@ public class XMLGettersSetters {
 
 	public void setStart(String start) {
 		this.start.add(start);
-		Log.i("This is the price:", start);
+		Log.i("This is the start time:", start);
 	}
 
 	public ArrayList<String> getEnd() {
@@ -49,7 +52,7 @@ public class XMLGettersSetters {
 
 	public void setEnd(String End) {
 		this.end.add(End);
-		Log.i("This is the year:", End);
+		Log.i("This is the end time:", End);
 	}
 
 	public ArrayList<String> getTitle() {
@@ -61,14 +64,6 @@ public class XMLGettersSetters {
 		Log.i("This is the title:", title);
 	}
 
-	public ArrayList<String> getFlags() {
-		return flags;
-	}
-
-	public void setFlags(String Flags) {
-		this.flags.add(Flags);
-		Log.i("This is the artist:", Flags);
-	}
 
 
 

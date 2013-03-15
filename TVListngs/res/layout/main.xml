@@ -1,3 +1,8 @@
+<!--  
+ * @author Mikko Miettinen
+ * @studentID S13006616
+ * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com> 
+ -->
 <LinearLayout android:id="@+id/MainContainer" xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -47,7 +52,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:id="@+id/layout">
+    android:id="@+id/contextLayout">
 
 
      

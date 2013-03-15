@@ -4,7 +4,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * @author Mikko Miettinen
+ * @author Mikko Miettinen 
+ * @studentID S13006616
+ * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com>
  * based on sourcecode from http://mobile.tutsplus.com/tutorials/android/android-sdk-build-a-simple-sax-parser/
  */
 
@@ -33,19 +35,12 @@ public class XMLHandler extends DefaultHandler {
 			Attributes attributes) throws SAXException {
 
 		elementOn = true;
-
+		//if we find the top level tag corresponding to 'channel' or 'programme'
 		if (localName.equals("channel"))
 		{
 			data = new XMLGettersSetters();
 		} else if (localName.equals("programme")) {
-			/** 
-			 * We can get the values of attributes for eg. if the CD tag had an attribute( <CD attr= "band">Akon</CD> ) 
-			 * we can get the value "band". Below is an example of how to achieve this.
-			 * 
-			 * String attributeValue = attributes.getValue("attr");
-			 * data.setAttribute(attributeValue);
-			 * 
-			 * */
+
 		}
 	}
 
@@ -59,7 +54,7 @@ public class XMLHandler extends DefaultHandler {
 		elementOn = false;
 
 		/** 
-		 * Sets the values after retrieving the values from the XML tags
+		 * Sets the values after retrieving the values from the XML tags that we are interested in
 		 * */ 
 		 if (localName.equalsIgnoreCase("title"))
 			data.setTitle(elementValue);
@@ -69,9 +64,7 @@ public class XMLHandler extends DefaultHandler {
 			data.setEnd(elementValue);
 		else if (localName.equalsIgnoreCase("start"))
 			data.setStart(elementValue);
-		/*else if (localName.equalsIgnoreCase("flags"))
-			data.setFlags(elementValue);
-	*/}
+		}
 
 	/** 
 	 * This is called to get the tags value
