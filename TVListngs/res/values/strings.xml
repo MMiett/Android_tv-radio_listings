@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">TvListings</string>
+<!--  
+ * @author Mikko Miettinen
+ * @studentID S1306616
+ * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com> 
+ -->
+    <string name="app_name">Tv and Radio Listings</string>
     <string name="author">Mikko Miettinen</string>
     <string name="menu_about">About</string>
     <string name="prev_day">prev</string>

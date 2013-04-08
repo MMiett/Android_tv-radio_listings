@@ -35,7 +35,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
  */
 public class MainActivity extends Activity {
 	final Context alertContext = this;
-	
+	ProgramData pDataList[];
 	ConnectivityManager connectivityManager; //for connectivity related checks
 	XMLGettersSetters data; // processed xml data class
 	private Spinner channelChooser;
@@ -172,6 +172,7 @@ public class MainActivity extends Activity {
 	public void wipeDataViews(){
 		 View layout = findViewById(R.id.contextLayout);
 		 ((ViewGroup)layout).removeAllViewsInLayout();
+		
 	}
 	
 	/**
@@ -186,13 +187,13 @@ public class MainActivity extends Activity {
 		TextView title[];		
 		TextView end[];
 		TextView start[];
-		TextView desc[];
+		//TextView desc[];
 		/**
 		 * array of linearlayouts for containing info of each 
 		 * programme, using for example as many as there is titles
 		 */
 		container= new LinearLayout[data.getTitle().size()]; 
-		
+		pDataList = new ProgramData[data.getTitle().size()];
 		
 		/** 
 		 * Makes the TextView arrays correct sized, based on how many xml items there were
@@ -200,7 +201,7 @@ public class MainActivity extends Activity {
 		title = new TextView[data.getTitle().size()];
 		start = new TextView[data.getStart().size()];
 		end = new TextView[data.getEnd().size()];			
-		desc = new TextView[data.getDesc().size()];
+		//desc = new TextView[data.getDesc().size()];
 		
 
 
@@ -220,9 +221,9 @@ public class MainActivity extends Activity {
 			start[i] = new TextView(this);
 			start[i].setText("starting time = "+data.getStart().get(i));
 			
-			desc[i] = new TextView(this);
+			/*desc[i] = new TextView(this);
 			desc[i].setText("Description = "+data.getDesc().get(i));
-			
+			*/
 			/**
 			 * setting up container style and other parameters
 			 **/
@@ -231,6 +232,40 @@ public class MainActivity extends Activity {
 			container[i].setPadding(10, 10, 10, 10);
 			//container[i].setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
 			container[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_borders));
+			container[i].setId(i);
+			container[i].setOnLongClickListener(new OnLongClickListener() {
+			
+				@Override
+				public boolean onLongClick(View v) {
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(alertContext);
+					
+				for(int i=0 ;i<pDataList.length;i++ ){
+					// set title
+					if(pDataList[i].getViewId() == v.getId()){
+					alertDialogBuilder.setTitle(pDataList[i].getTitle());
+				
+				alertDialogBuilder
+				.setMessage("starts at: "+pDataList[i].getStartTime()
+						+"\nends at: "+pDataList[i].getEndTime()+
+						"\n"+pDataList[i].getDesc())
+				.setCancelable(false)
+				.setPositiveButton("Close",new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,int id) {
+					}
+				  });
+		
+					}
+					
+				}
+				// create alert dialog
+				AlertDialog alertDialog = alertDialogBuilder.create();
+
+				// show it
+				alertDialog.show();
+					return false;
+				}
+			});
+
 	
 			/**
 			 * adding one container to contextlayout and after that 
@@ -240,13 +275,22 @@ public class MainActivity extends Activity {
 			((ViewGroup) container[i]).addView(title[i]);
 			((ViewGroup) container[i]).addView(start[i]);
 			((ViewGroup) container[i]).addView(end[i]);				
-			((ViewGroup) container[i]).addView(desc[i]);
+			//((ViewGroup) container[i]).addView(desc[i]);
 
-		
+			pDataList[i] = new ProgramData(data.getTitle().get(i),
+					data.getDesc().get(i),
+					data.getStart().get(i),
+					data.getEnd().get(i),
+					container[i].getId());
 		}
 		
 	}
-	
+	/**
+	 * method to connect and parse xml
+	 * 
+	 * @param buildUrl
+	 * @return XMLHandler data set
+	 */
 	public XMLHandler LoadList(String buildUrl){
 		try {
 			
