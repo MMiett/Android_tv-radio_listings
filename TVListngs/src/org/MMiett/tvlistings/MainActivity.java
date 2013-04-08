@@ -7,8 +7,14 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
+
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -26,8 +32,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
  *  
  */
 public class MainActivity extends Activity {
+	final Context alertContext = this;
 	
-	
+	ConnectivityManager connectivityManager;
 	XMLGettersSetters data; // processed xml data class
 	private Spinner channelChooser;
 	private Button dateButton,prevButton,nextButton; //day choosing buttons
@@ -38,6 +45,11 @@ public class MainActivity extends Activity {
     int iCurrentChannel;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		
+		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()) //internet access 
+		{
 		today = new Time(Time.getCurrentTimezone());
 		today.setToNow();
 		cDate = Integer.toString(today.monthDay) +"/" + Integer.toString(today.month) +"/"+ Integer.toString(today.year); 
@@ -47,6 +59,9 @@ public class MainActivity extends Activity {
 		 setContentView(R.layout.main);
 		
 		 channelChooser = (Spinner)findViewById(R.id.ChannelSpinner);
+		 /**
+		  * sets on item selected listener to channel spinner and current channel position in it
+		  */
 		 iCurrentChannel = channelChooser.getSelectedItemPosition();
 		 channelChooser.setOnItemSelectedListener(new OnItemSelectedListener() {
 			    @Override
@@ -80,13 +95,34 @@ public class MainActivity extends Activity {
 			//lets load the default channel at app start
 			data = LoadList(tvListingBaseURL+"0/"+channelChooser.getItemAtPosition(0)+".xml").data;
 			placeData();
+		}
+		else{ //no internet access
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(alertContext);
+	 
+				// set title
+				alertDialogBuilder.setTitle("No internet connection available");
+			
+			alertDialogBuilder
+			.setMessage("This application need internet connection to work, please connect to internet and try again if you want to proceed")
+			.setCancelable(false)
+			.setPositiveButton("Close",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// if this button is clicked, close
+					// current activity
+					MainActivity.this.finish();
+				}
+			  });
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
 
-
+			// show it
+			alertDialog.show();
+		}
 	
 	}
 	
 	/**
-	 * method to quickly wipe the unwanted views from context layot element
+	 * method to quickly wipe the unwanted views from contextLayout element
 	 */
 	public void wipeDataViews(){
 		 View layout = findViewById(R.id.contextLayout);
@@ -185,7 +221,27 @@ public class MainActivity extends Activity {
 			xmlR.parse(new InputSource(url.openStream()));
 			return myXMLHandler;
 			
-		} catch (Exception e) {
+		} catch (Exception e) {//something didn't work out, lets inform user and close
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(alertContext);
+			 
+			// set title
+			alertDialogBuilder.setTitle("Problems to connect webservice");
+		
+		alertDialogBuilder
+		.setMessage("Connection to webservice could not be established, please try again later.")
+		.setCancelable(false)
+		.setPositiveButton("Close",new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int id) {
+				// if this button is clicked, close
+				// current activity
+				MainActivity.this.finish();
+			}
+		  });
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
 			System.out.println(e);
 			XMLHandler myXMLHandler = new XMLHandler();
 			return myXMLHandler;
