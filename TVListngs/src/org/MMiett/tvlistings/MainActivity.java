@@ -17,6 +17,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.format.Time;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -86,7 +88,7 @@ public class MainActivity extends Activity {
 			        return;
 			    }
 
-			});
+			}); //initialize buttons and disable the datebutton to make it unclickable
 		 dateButton = (Button)findViewById(R.id.date_button);
 		 dateButton.setEnabled(false);
 		 dateButton.setText(cDate);
@@ -296,12 +298,39 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		
-		
+		MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.main, menu);
 		return true;
 	}
 	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+    	switch (item.getItemId())
+    	{
+    		case R.id.menu_about:  AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(alertContext);
+			 
+			// set title
+			alertDialogBuilder.setTitle("About application");
+		
+			alertDialogBuilder
+			.setMessage("This app was created for Introduction to mobile device programming coursework at Glasgow Caledonian university by " 
+					+ getResources().getString(R.string.author) +" \n" +"SID : S1306616")
+			.setCancelable(false)
+			.setPositiveButton("Close",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+
+				}
+			  });
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+	
+			// show it
+			alertDialog.show();
+    		break;				
+    	}
+    	return true;
+    }
 	
 
 }
