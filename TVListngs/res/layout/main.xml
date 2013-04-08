@@ -1,6 +1,6 @@
 <!--  
  * @author Mikko Miettinen
- * @studentID S13006616
+ * @studentID S1306616
  * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com> 
  -->
 <LinearLayout android:id="@+id/MainContainer" xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,13 +10,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 	
-	
-
 	    <Spinner
 	        android:id="@+id/ChannelSpinner"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/hello_world" />
+	        
+	        android:entries="@array/channelList" />
 
 <LinearLayout
     android:layout_width="fill_parent"
@@ -52,15 +51,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:id="@+id/contextLayout">
-
-
-     
-</LinearLayout>
-	            
-	  
-	            
-	  
-	        
+    android:id="@+id/contextLayout"></LinearLayout>
+	                
 	    </ScrollView>
 </LinearLayout>

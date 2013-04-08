@@ -5,7 +5,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * @author Mikko Miettinen 
- * @studentID S13006616
+ * @studentID S1306616
  * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com>
  * based on sourcecode from http://mobile.tutsplus.com/tutorials/android/android-sdk-build-a-simple-sax-parser/
  */
@@ -35,7 +35,9 @@ public class XMLHandler extends DefaultHandler {
 			Attributes attributes) throws SAXException {
 
 		elementOn = true;
-		//if we find the top level tag corresponding to 'channel' or 'programme'
+		/**
+		 * if we find the top level tag corresponding to 'channel' or 'programme'
+		 **/
 		if (localName.equals("channel"))
 		{
 			data = new XMLGettersSetters();
