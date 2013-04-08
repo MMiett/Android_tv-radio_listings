@@ -16,9 +16,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -34,25 +34,30 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class MainActivity extends Activity {
 	final Context alertContext = this;
 	
-	ConnectivityManager connectivityManager;
+	ConnectivityManager connectivityManager; //for connectivity related checks
 	XMLGettersSetters data; // processed xml data class
 	private Spinner channelChooser;
 	private Button dateButton,prevButton,nextButton; //day choosing buttons
-    private String tvListingURL = "http://bleb.org/tv/data/listings/0/bbc1_hd.xml";//rss.php?ch=bbc1_scotland&day=0";
+    //private String tvListingURL = "http://bleb.org/tv/data/listings/0/bbc1_hd.xml";
+	//rss.php?ch=bbc1_scotland&day=0";
     private String tvListingBaseURL = "http://bleb.org/tv/data/listings/";
-    Time today;
-    String cDate = "";
-    int iCurrentChannel;
+    Time today = new Time(Time.getCurrentTimezone());
+	
+    String cDate = ""; //string container for date
+    int dayIndexOffset=0; //integer to keep track day index
+    int dayIndexOffMin = -1; //minimum limit for day offset index
+    int dayIndexOffMax = 5; //maximum limit for day offset index
+    int iCurrentChannel;//integer to keep track of current channel index
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		//initializing connectivity manager so we can check the connectivity and active networking
 		connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-		
-		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()) //internet access 
+		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()) //we have internet access 
 		{
-		today = new Time(Time.getCurrentTimezone());
-		today.setToNow();
-		cDate = Integer.toString(today.monthDay) +"/" + Integer.toString(today.month) +"/"+ Integer.toString(today.year); 
+
+		today.setToNow(); //time variable to get date
+		cDate = Integer.toString(today.monthDay + dayIndexOffset) +"/" + Integer.toString(today.month) +"/"+ Integer.toString(today.year); 
 		
 
 		super.onCreate(savedInstanceState);
@@ -69,7 +74,7 @@ public class MainActivity extends Activity {
 			    	if (iCurrentChannel != position){
 			    		wipeDataViews();
 			    		//lets load the default channel at app start
-						data = LoadList(tvListingBaseURL+"0/"+channelChooser.getItemAtPosition(position)+".xml").data;
+						data = LoadList(tvListingBaseURL+ dayIndexOffset +"/"+channelChooser.getItemAtPosition(position)+".xml").data;
 						placeData();
 			    }
 			    iCurrentChannel = position;
@@ -90,20 +95,58 @@ public class MainActivity extends Activity {
 			 /**
 			  *  lets attach onClickListeners
 			  */	
-			
-			
+			prevButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					dayIndexOffset--;
+					if(dayIndexOffset == dayIndexOffMin){
+						prevButton.setEnabled(false);
+						} 
+					else{
+						prevButton.setEnabled(true);
+						nextButton.setEnabled(true);
+						}
+					cDate = Integer.toString(today.monthDay + dayIndexOffset) +"/" + Integer.toString(today.month) +"/"+ Integer.toString(today.year); 
+					dateButton.setText(cDate);
+					wipeDataViews();
+					data = LoadList(tvListingBaseURL+ dayIndexOffset+"/"+channelChooser.getItemAtPosition( iCurrentChannel)+".xml").data;
+					placeData();
+					 
+				}
+			});
+			nextButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					dayIndexOffset++;
+					if(dayIndexOffset == dayIndexOffMax){
+						nextButton.setEnabled(false);
+						}
+					else{
+						nextButton.setEnabled(true);
+						prevButton.setEnabled(true);
+					}
+					cDate = Integer.toString(today.monthDay + dayIndexOffset) +"/" + Integer.toString(today.month) +"/"+ Integer.toString(today.year); 
+					dateButton.setText(cDate);
+					wipeDataViews();
+					data = LoadList(tvListingBaseURL+ dayIndexOffset+"/"+channelChooser.getItemAtPosition( iCurrentChannel)+".xml").data;
+					placeData();
+					
+				}
+			});
 			//lets load the default channel at app start
-			data = LoadList(tvListingBaseURL+"0/"+channelChooser.getItemAtPosition(0)+".xml").data;
+			data = LoadList(tvListingBaseURL+ dayIndexOffset+"/"+channelChooser.getItemAtPosition( iCurrentChannel)+".xml").data;
 			placeData();
 		}
-		else{ //no internet access
+		else{ //we don't have internet access so lets throw alert for  the user and close the activity
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(alertContext);
 	 
 				// set title
 				alertDialogBuilder.setTitle("No internet connection available");
 			
 			alertDialogBuilder
-			.setMessage("This application need internet connection to work, please connect to internet and try again if you want to proceed")
+			.setMessage("This application needs internet connection to work, please connect to internet and try again if you want to proceed")
 			.setCancelable(false)
 			.setPositiveButton("Close",new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
@@ -167,25 +210,26 @@ public class MainActivity extends Activity {
 		for (int i = 0; i < data.getTitle().size(); i++) {
 			
 			title[i] = new TextView(this);
-			title[i].setText("Title = "+data.getTitle().get(i));
+			title[i].setText(data.getTitle().get(i));
 			
 			end[i] = new TextView(this);
-			end[i].setText("end = "+data.getEnd().get(i));
+			end[i].setText("ending time = "+data.getEnd().get(i));
 			
 			start[i] = new TextView(this);
-			start[i].setText("start = "+data.getStart().get(i));
+			start[i].setText("starting time = "+data.getStart().get(i));
 			
 			desc[i] = new TextView(this);
-			desc[i].setText("desc = "+data.getDesc().get(i));
+			desc[i].setText("Description = "+data.getDesc().get(i));
 			
 			/**
 			 * setting up container style and other parameters
 			 **/
 			container[i]= new LinearLayout(this);
 			container[i].setOrientation(1); //1 = vertical and 0 = horizontal
-			container[i].setPadding(10, 0, 0, 30);
-			container[i].setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-			
+			container[i].setPadding(10, 10, 10, 10);
+			//container[i].setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+			container[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_borders));
+	
 			/**
 			 * adding one container to contextlayout and after that 
 			 * adding corresponding textviews to said container
@@ -253,6 +297,8 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		
+		
 		return true;
 	}
 	

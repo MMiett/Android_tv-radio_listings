@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+ <!--  
+ * @author Mikko Miettinen
+ * @studentID S1306616
+ * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com> 
+ -->
   
 <string-array name="channelList">
     <item>bbc1</item>

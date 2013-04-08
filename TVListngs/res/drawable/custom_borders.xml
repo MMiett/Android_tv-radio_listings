@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+ * @author Mikko Miettinen
+ * @studentID S1306616
+ * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com> 
+ -->
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+   <stroke
+        android:width="1dip"
+        android:color="@android:color/darker_gray" />
+</shape>
+

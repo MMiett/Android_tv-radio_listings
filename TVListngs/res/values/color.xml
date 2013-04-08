@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--  
+ * @author Mikko Miettinen
+ * @studentID S1306616
+ * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com> 
+ -->
 <resources>
 <color name="blue">#0000ff</color>
 </resources>
