@@ -31,19 +31,19 @@ import android.widget.AdapterView.OnItemSelectedListener;
  * @studentID S1306616
  * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com>
  * SaxParser parts are based on example found here http://mobile.tutsplus.com/tutorials/android/android-sdk-build-a-simple-sax-parser/ 
- *  
+ * MainActivity.java is core of 'TV and Radio listings'-application, since absence of threading 
+ * connections and parsing is basically done here, among all other things
  */
 public class MainActivity extends Activity {
-	final Context alertContext = this;
-	ProgramData pDataList[];
+	final Context alertContext = this; //defining and initializing context for alertDialogs
+	ProgramData pDataList[]; //definition for array of my ProgramData structures
 	ConnectivityManager connectivityManager; //for connectivity related checks
 	XMLGettersSetters data; // processed xml data class
-	private Spinner channelChooser;
+	private Spinner channelChooser; //lets define spinner  and other views for programmatical manipulation
 	private Button dateButton,prevButton,nextButton; //day choosing buttons
-    //private String tvListingURL = "http://bleb.org/tv/data/listings/0/bbc1_hd.xml";
-	//rss.php?ch=bbc1_scotland&day=0";
-    private String tvListingBaseURL = "http://bleb.org/tv/data/listings/";
-    Time today = new Time(Time.getCurrentTimezone());
+    
+    private String tvListingBaseURL = "http://bleb.org/tv/data/listings/"; //base string for url connections
+    Time today = new Time(Time.getCurrentTimezone()); //time object to keep track of current date probably calendar object would have been better
 	
     String cDate = ""; //string container for date
     int dayIndexOffset=0; //integer to keep track day index
@@ -58,7 +58,8 @@ public class MainActivity extends Activity {
 		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()) //we have internet access 
 		{
 
-		today.setToNow(); //time variable to get date
+		today.setToNow(); //setting current time and date to time object
+		//'parsing' desired format of date string for dateButton
 		cDate = Integer.toString(today.monthDay + dayIndexOffset) +"/" + Integer.toString(today.month) +"/"+ Integer.toString(today.year); 
 		
 
@@ -70,16 +71,16 @@ public class MainActivity extends Activity {
 		  * sets on item selected listener to channel spinner and current channel position in it
 		  */
 		 iCurrentChannel = channelChooser.getSelectedItemPosition();
-		 channelChooser.setOnItemSelectedListener(new OnItemSelectedListener() {
+		 channelChooser.setOnItemSelectedListener(new OnItemSelectedListener() { //adding listener to handle when channel is changed event
 			    @Override
 			    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 			    	if (iCurrentChannel != position){
 			    		wipeDataViews();
-			    		//lets load the default channel at app start
+			    		//lets load the default channel/first channel of spinners item list at app start
 						data = LoadList(tvListingBaseURL+ dayIndexOffset +"/"+channelChooser.getItemAtPosition(position)+".xml").data;
 						placeData();
 			    }
-			    iCurrentChannel = position;
+			    iCurrentChannel = position; //keeping track of current spinner item index
 			    
 			    }
 
@@ -88,14 +89,17 @@ public class MainActivity extends Activity {
 			        return;
 			    }
 
-			}); //initialize buttons and disable the datebutton to make it unclickable
+			}); 
+		 //initialize and attach buttons and disable the dateButton since there is no designed use for it
+		 //yet atleast
 		 dateButton = (Button)findViewById(R.id.date_button);
 		 dateButton.setEnabled(false);
 		 dateButton.setText(cDate);
 		 prevButton = (Button)findViewById(R.id.prev_button);
 		 nextButton = (Button)findViewById(R.id.next_button);
 			 /**
-			  *  lets attach onClickListeners
+			  *  lets attach onClickListener and load the corresponding listings for changed day 
+			  *  after wiping the contextLayout clean to keep it working as intended
 			  */	
 			prevButton.setOnClickListener(new OnClickListener() {
 				
@@ -117,6 +121,10 @@ public class MainActivity extends Activity {
 					 
 				}
 			});
+			 /**
+			  *  lets attach onClickListener and load the corresponding listings for changed day 
+			  *  after wiping the contextLayout clean to keep it working as intended
+			  */	
 			nextButton.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -144,7 +152,7 @@ public class MainActivity extends Activity {
 		else{ //we don't have internet access so lets throw alert for  the user and close the activity
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(alertContext);
 	 
-				// set title
+				// set title for alertDialog
 				alertDialogBuilder.setTitle("No internet connection available");
 			
 			alertDialogBuilder
@@ -168,6 +176,7 @@ public class MainActivity extends Activity {
 	
 	/**
 	 * method to quickly wipe the unwanted views from contextLayout element
+	 * effectively 'resetting' the ViewGroup
 	 */
 	public void wipeDataViews(){
 		 View layout = findViewById(R.id.contextLayout);
@@ -187,7 +196,6 @@ public class MainActivity extends Activity {
 		TextView title[];		
 		TextView end[];
 		TextView start[];
-		//TextView desc[];
 		/**
 		 * array of linearlayouts for containing info of each 
 		 * programme, using for example as many as there is titles
@@ -201,9 +209,6 @@ public class MainActivity extends Activity {
 		title = new TextView[data.getTitle().size()];
 		start = new TextView[data.getStart().size()];
 		end = new TextView[data.getEnd().size()];			
-		//desc = new TextView[data.getDesc().size()];
-		
-
 
 		/** 
 		 * Run a for loop to set All the TextViews with text to corresponding container until 
@@ -221,38 +226,37 @@ public class MainActivity extends Activity {
 			start[i] = new TextView(this);
 			start[i].setText("starting time = "+data.getStart().get(i));
 			
-			/*desc[i] = new TextView(this);
-			desc[i].setText("Description = "+data.getDesc().get(i));
-			*/
 			/**
 			 * setting up container style and other parameters
 			 **/
 			container[i]= new LinearLayout(this);
 			container[i].setOrientation(1); //1 = vertical and 0 = horizontal
 			container[i].setPadding(10, 10, 10, 10);
-			//container[i].setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
 			container[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_borders));
-			container[i].setId(i);
+			container[i].setId(i); //setting id so we can use it later onLongClick event 
 			container[i].setOnLongClickListener(new OnLongClickListener() {
 			
+				/**
+				 * onLongClick to get more details at dialog box of desired programme
+				 */
 				@Override
 				public boolean onLongClick(View v) {
 					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(alertContext);
 					
 				for(int i=0 ;i<pDataList.length;i++ ){
-					// set title
+					// set title for dialogs
 					if(pDataList[i].getViewId() == v.getId()){
 					alertDialogBuilder.setTitle(pDataList[i].getTitle());
 				
-				alertDialogBuilder
-				.setMessage("starts at: "+pDataList[i].getStartTime()
-						+"\nends at: "+pDataList[i].getEndTime()+
-						"\n"+pDataList[i].getDesc())
-				.setCancelable(false)
-				.setPositiveButton("Close",new DialogInterface.OnClickListener() {
+					alertDialogBuilder
+						.setMessage("starts at: "+pDataList[i].getStartTime()
+								+"\nends at: "+pDataList[i].getEndTime()
+								+"\n"+pDataList[i].getDesc())
+						.setCancelable(false)
+						.setPositiveButton("Close",new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,int id) {
-					}
-				  });
+							}
+						});
 		
 					}
 					
@@ -275,7 +279,6 @@ public class MainActivity extends Activity {
 			((ViewGroup) container[i]).addView(title[i]);
 			((ViewGroup) container[i]).addView(start[i]);
 			((ViewGroup) container[i]).addView(end[i]);				
-			//((ViewGroup) container[i]).addView(desc[i]);
 
 			pDataList[i] = new ProgramData(data.getTitle().get(i),
 					data.getDesc().get(i),
@@ -315,7 +318,7 @@ public class MainActivity extends Activity {
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(alertContext);
 			 
 			// set title
-			alertDialogBuilder.setTitle("Problems to connect webservice");
+			alertDialogBuilder.setTitle("Problems to connect web service");
 		
 		alertDialogBuilder
 		.setMessage("Connection to webservice could not be established, please try again later.")
@@ -347,6 +350,9 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	/**
+	 * deals with options menu selections and what to do when they are selected
+	 */
 	@Override
     public boolean onOptionsItemSelected(MenuItem item)
     {

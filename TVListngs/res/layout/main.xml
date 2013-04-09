@@ -2,6 +2,7 @@
  * @author Mikko Miettinen
  * @studentID S1306616
  * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com> 
+ * portrait layout
  -->
 <LinearLayout android:id="@+id/MainContainer" xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,7 +15,6 @@
 	        android:id="@+id/ChannelSpinner"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        
 	        android:entries="@array/channelList" />
 
 <LinearLayout
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.65"
-        android:text="Date" />
+        android:text="Date" /><!-- default value that in reality is never seen during correct run -->
 
     <Button
         android:id="@+id/next_button"
@@ -42,16 +42,16 @@
         android:text="@string/next_day" />
 </LinearLayout>
 
-	    <ScrollView
-	        android:id="@+id/ListingContext"
-	        android:layout_weight="1"
-	        android:layout_width="fill_parent"
-	        android:layout_height="0dip">
-<LinearLayout 
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/contextLayout"></LinearLayout>
+    <ScrollView
+        android:id="@+id/ListingContext"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip">
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:id="@+id/contextLayout"></LinearLayout>
 	                
 	    </ScrollView>
 </LinearLayout>

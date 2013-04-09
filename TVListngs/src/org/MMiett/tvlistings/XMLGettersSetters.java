@@ -10,7 +10,7 @@ import android.util.Log;
  * @author Mikko Miettinen 
  * @studentID S1306616
  * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com>
- * based on sourcecode from http://mobile.tutsplus.com/tutorials/android/android-sdk-build-a-simple-sax-parser/
+ * based on sourcecode and tutorial from http://mobile.tutsplus.com/tutorials/android/android-sdk-build-a-simple-sax-parser/
  */
 
 

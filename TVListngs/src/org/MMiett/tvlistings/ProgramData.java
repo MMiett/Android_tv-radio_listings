@@ -3,7 +3,8 @@ package org.MMiett.tvlistings;
  * @author Mikko Miettinen 
  * @studentID S1306616
  * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com>
- *  
+ * ProgramnData.java is just a data structure that i use to store all that 
+ * xml data from web service so i don't loose it too soon.
  */
 public class ProgramData {
 	private String Title;

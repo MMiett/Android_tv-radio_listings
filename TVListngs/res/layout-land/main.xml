@@ -2,6 +2,7 @@
  * @author Mikko Miettinen
  * @studentID S1306616
  * @email <MMIETT200@caledonian.ac.uk><mik.miettinen@gmail.com> 
+ * landscape layout
  -->
 <LinearLayout android:id="@+id/MainContainer" xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -32,7 +33,7 @@
 	        android:id="@+id/date_button"
 	        android:layout_width="112dp"
 	        android:layout_height="fill_parent"
-	        android:text="Date" />
+	        android:text="Date" /><!-- default value that in reality is never seen during correct run -->
 
 	    <Button
 	        android:id="@+id/next_button"
@@ -43,9 +44,8 @@
 
 	    <ScrollView
 	        android:id="@+id/ListingContext"
-	          android:layout_weight="1"
-	          
-	       android:layout_width="fill_parent"
+	        android:layout_weight="1"
+	        android:layout_width="fill_parent"
 	        android:layout_height="0dip">
 <LinearLayout
     android:layout_width="fill_parent"
